@@ -1,19 +1,19 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
-test('Checkout with one concrete product', async ({ page, baseURL }) => {
+test('Checkout with one concrete product', async ({ page }) => {
 
   // Add a product to my cart
   await page.goto('/en/hp-slate-10-pro-ee-169');
   await page.click('button:has-text("Add to Cart")');
 
   // Start the checkout process
-  await expect(page).toHaveURL(baseURL + '/en/cart');
+  await expect(new URL(page.url()).pathname).toBe('/en/cart');
   await page.waitForSelector('text=HP Slate 10 Pro EE', { timeout: 5000 });
   await page.click('a:has-text("Checkout")');
 
   // Fill out guest checkout form
-  await expect(page).toHaveURL(baseURL + '/en/checkout/customer');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/customer');
   await page.click('#guest', { force: true });
   await page.fill('#guestForm_customer_first_name', 'Harry');
   await page.fill('#guestForm_customer_last_name', 'Klein');
@@ -22,7 +22,7 @@ test('Checkout with one concrete product', async ({ page, baseURL }) => {
   await page.click('button:text("Submit")');
 
   // Fill out the address form
-  await expect(page).toHaveURL(baseURL + '/en/checkout/address');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/address');
   await page.selectOption('.select__select.js-address__form-select-shippingAddress', '0');
   await page.fill('#addressesForm_shippingAddress_first_name', 'Harry');
   await page.fill('#addressesForm_shippingAddress_last_name', 'Klein');
@@ -34,25 +34,25 @@ test('Checkout with one concrete product', async ({ page, baseURL }) => {
   await page.click('button:text("Next")');
 
   // Select a shipment method
-  await expect(page).toHaveURL(baseURL + '/en/checkout/shipment');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/shipment');
   await page.click('#shipmentCollectionForm_shipmentGroups_0_shipment_shipmentSelection_0', { force: true });
   await page.click('button:text("Next")');
 
   // Select a payment method
-  await expect(page).toHaveURL(baseURL + '/en/checkout/payment');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/payment');
   await page.click('#paymentForm_paymentSelection_dummyPaymentInvoice', { force: true });
   await page.fill('#paymentForm_dummyPaymentInvoice_date_of_birth', '01.01.2000');
   await page.click('button:text("Go to Summary")');
 
   // Finalize checkout
-  await expect(page).toHaveURL(baseURL + '/en/checkout/summary');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/summary');
   await page.evaluate(() => document.querySelector('.form__action.button.button--success.js-summary__submit-button').scrollIntoView());
   await page.check('[name="acceptTermsAndConditions"]', { force: true });
   await page.evaluate(() => document.querySelector('.form__action.button.button--success.js-summary__submit-button').disabled = false);
   await page.click('button:text("Submit your order")');
 });
 
-test('should checkout with two concrete products', async ({ page, baseURL }) => {
+test('should checkout with two concrete products', async ({ page }) => {
 
   // Add two products to my cart
   await page.goto('/en/hp-slate-10-pro-ee-169');
@@ -61,13 +61,13 @@ test('should checkout with two concrete products', async ({ page, baseURL }) => 
   await page.click('button:has-text("Add to Cart")');
 
   // Start the checkout process
-  await expect(page).toHaveURL(baseURL + '/en/cart');
+  await expect(new URL(page.url()).pathname).toBe('/en/cart');
   await page.waitForSelector('text=HP Slate 10 Pro EE', { timeout: 5000 });
   await page.waitForSelector('text=Acer Iconia B1-850', { timeout: 5000 });
   await page.click('a:has-text("Checkout")');
 
   // Fill out guest checkout form
-  await expect(page).toHaveURL(baseURL + '/en/checkout/customer');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/customer');
   await page.click('#guest', { force: true });
   await page.fill('#guestForm_customer_first_name', 'Harry');
   await page.fill('#guestForm_customer_last_name', 'Klein');
@@ -76,7 +76,7 @@ test('should checkout with two concrete products', async ({ page, baseURL }) => 
   await page.click('button:text("Submit")');
 
   // Fill out the address form
-  await expect(page).toHaveURL(baseURL + '/en/checkout/address');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/address');
   await page.selectOption('.select__select.js-address__form-select-shippingAddress', '0');
   await page.fill('#addressesForm_shippingAddress_first_name', 'Harry');
   await page.fill('#addressesForm_shippingAddress_last_name', 'Klein');
@@ -88,18 +88,18 @@ test('should checkout with two concrete products', async ({ page, baseURL }) => 
   await page.click('button:text("Next")');
 
   // Select a shipment method
-  await expect(page).toHaveURL(baseURL + '/en/checkout/shipment');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/shipment');
   await page.click('#shipmentCollectionForm_shipmentGroups_0_shipment_shipmentSelection_0', { force: true });
   await page.click('button:text("Next")');
 
   // Select a payment method
-  await expect(page).toHaveURL(baseURL + '/en/checkout/payment');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/payment');
   await page.click('#paymentForm_paymentSelection_dummyPaymentInvoice', { force: true });
   await page.fill('#paymentForm_dummyPaymentInvoice_date_of_birth', '01.01.2000');
   await page.click('button:text("Go to Summary")');
 
   // Finalize checkout
-  await expect(page).toHaveURL(baseURL + '/en/checkout/summary');
+  await expect(new URL(page.url()).pathname).toBe('/en/checkout/summary');
   await page.evaluate(() => document.querySelector('.form__action.button.button--success.js-summary__submit-button').scrollIntoView());
   await page.check('[name="acceptTermsAndConditions"]', { force: true });
   await page.evaluate(() => document.querySelector('.form__action.button.button--success.js-summary__submit-button').disabled = false);
