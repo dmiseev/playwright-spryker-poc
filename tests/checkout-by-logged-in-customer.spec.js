@@ -55,6 +55,8 @@ test('Checkout with one concrete product', async ({ page }) => {
   await page.check('[name="acceptTermsAndConditions"]', { force: true });
   await page.evaluate(() => document.querySelector('.form__action.button.button--success.js-summary__submit-button').disabled = false);
   await page.click('button:text("Submit your order")');
+
+  await page.waitForSelector('text=Your order has been placed successfully!');
 });
 
 test('should checkout with two concrete products', async ({ page }) => {
@@ -112,4 +114,6 @@ test('should checkout with two concrete products', async ({ page }) => {
   await page.check('[name="acceptTermsAndConditions"]', { force: true });
   await page.evaluate(() => document.querySelector('.form__action.button.button--success.js-summary__submit-button').disabled = false);
   await page.click('button:text("Submit your order")');
+
+  await page.waitForSelector('text=Your order has been placed successfully!');
 });
